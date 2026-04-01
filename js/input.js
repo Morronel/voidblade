@@ -2,8 +2,9 @@ import { KEYS, JUMP_BUFFER_FRAMES, COYOTE_FRAMES } from './config.js';
 
 class InputManager {
     constructor() {
-        this.keys = {};
-        this.prevKeys = {};
+        this.keys = {};          // Live state, modified by async events
+        this.thisFrame = {};     // Snapshot of keys at start of this frame
+        this.prevFrame = {};     // Snapshot from previous frame
         this.buffers = {};
         this.coyoteTimer = 0;
         this.onGround = false;
@@ -23,6 +24,10 @@ class InputManager {
     }
 
     update() {
+        // Double-buffer: snapshot live keys for this frame
+        this.prevFrame = this.thisFrame;
+        this.thisFrame = { ...this.keys };
+
         // Decrement buffers
         for (const action in this.buffers) {
             if (this.buffers[action] > 0) this.buffers[action]--;
@@ -30,7 +35,7 @@ class InputManager {
 
         // Set buffers on fresh press
         for (const action in KEYS) {
-            if (this._justPressedRaw(action)) {
+            if (this.justPressed(action)) {
                 this.buffers[action] = JUMP_BUFFER_FRAMES;
             }
         }
@@ -41,16 +46,13 @@ class InputManager {
         } else {
             if (this.coyoteTimer > 0) this.coyoteTimer--;
         }
-
-        // Store previous state
-        this.prevKeys = { ...this.keys };
     }
 
     isDown(action) {
         const binds = KEYS[action];
         if (!binds) return false;
         for (const key of binds) {
-            if (this.keys[key]) return true;
+            if (this.thisFrame[key]) return true;
         }
         return false;
     }
@@ -59,13 +61,9 @@ class InputManager {
         const binds = KEYS[action];
         if (!binds) return false;
         for (const key of binds) {
-            if (this.keys[key] && !this.prevKeys[key]) return true;
+            if (this.thisFrame[key] && !this.prevFrame[key]) return true;
         }
         return false;
-    }
-
-    _justPressedRaw(action) {
-        return this.justPressed(action);
     }
 
     // Buffered press — returns true if pressed within buffer window, then consumes
