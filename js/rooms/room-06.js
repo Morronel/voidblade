@@ -20,21 +20,19 @@ export function createRoom() {
             for (let y = 0; y < 30; y++) {
                 const row = [];
                 for (let x = 0; x < 30; x++) {
+                    // Door tiles take priority over borders
+                    if (y === 29 && x === 15) {
+                        row.push(DB);
+                    } else if (y === 0 && x === 15) {
+                        row.push(DU);
+                    }
                     // Borders
-                    if (x === 0 || x === 29 || y === 0 || y === 29) {
+                    else if (x === 0 || x === 29 || y === 0 || y === 29) {
                         row.push(S);
                     }
                     // Bottom spikes
                     else if (y >= 27 && y < 29) {
                         row.push(K);
-                    }
-                    // Door at bottom
-                    else if (y === 29 && x === 15) {
-                        row.push(DB);
-                    }
-                    // Door at top
-                    else if (y === 0 && x === 15) {
-                        row.push(DU);
                     }
                     else {
                         row.push(_);
@@ -43,26 +41,18 @@ export function createRoom() {
                 grid.push(row);
             }
             // Add platforms for climbing
-            // Level 1
             for (let x = 3; x < 8; x++) grid[25][x] = P;
             for (let x = 12; x < 17; x++) grid[25][x] = P;
-            // Level 2
             for (let x = 20; x < 26; x++) grid[22][x] = P;
             for (let x = 5; x < 10; x++) grid[22][x] = P;
-            // Level 3
             for (let x = 12; x < 18; x++) grid[19][x] = P;
-            // Level 4
             for (let x = 3; x < 7; x++) grid[16][x] = P;
             for (let x = 22; x < 27; x++) grid[16][x] = P;
-            // Level 5
             for (let x = 10; x < 15; x++) grid[13][x] = P;
             for (let x = 16; x < 20; x++) grid[13][x] = P;
-            // Level 6
             for (let x = 4; x < 9; x++) grid[10][x] = P;
             for (let x = 21; x < 26; x++) grid[10][x] = P;
-            // Level 7
             for (let x = 12; x < 18; x++) grid[7][x] = P;
-            // Level 8
             for (let x = 5; x < 10; x++) grid[4][x] = P;
             for (let x = 20; x < 25; x++) grid[4][x] = P;
             // Top landing
