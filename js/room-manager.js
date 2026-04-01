@@ -70,38 +70,41 @@ export class RoomManager {
         }
     }
 
-    // Check if player is at a door
+    // Check if player is at a door by scanning for door tiles at player position
     checkDoors(player) {
-        if (!this.currentRoom || !this.currentRoom.doors) return null;
+        if (!this.currentRoom || !this.currentRoom.doors || !this.tilemap) return null;
 
-        const px = Math.floor(player.getCenterX() / TILE_SIZE);
-        const py = Math.floor(player.getCenterY() / TILE_SIZE);
+        // Check tiles the player overlaps
+        const left = Math.floor(player.x / TILE_SIZE);
+        const right = Math.floor((player.x + player.width - 1) / TILE_SIZE);
+        const top = Math.floor(player.y / TILE_SIZE);
+        const bottom = Math.floor((player.y + player.height - 1) / TILE_SIZE);
 
-        for (const door of this.currentRoom.doors) {
-            // Check tile-based doors
-            let match = false;
-            switch (door.side) {
-                case 'right':
-                    match = px >= this.currentRoom.width - 2 &&
-                            Math.abs(py - door.y) <= 1;
-                    break;
-                case 'left':
-                    match = px <= 1 && Math.abs(py - door.y) <= 1;
-                    break;
-                case 'top':
-                    match = py <= 1 && Math.abs(px - door.x) <= 1;
-                    break;
-                case 'bottom':
-                    match = py >= this.currentRoom.height - 2 &&
-                            Math.abs(px - door.x) <= 1;
-                    break;
-            }
+        for (let ty = top; ty <= bottom; ty++) {
+            for (let tx = left; tx <= right; tx++) {
+                const tile = this.tilemap.get(tx, ty);
+                const side = this._doorTileToSide(tile);
+                if (!side) continue;
 
-            if (match) {
-                return door;
+                // Found a door tile — find the matching door entry by side
+                for (const door of this.currentRoom.doors) {
+                    if (door.side === side) {
+                        return door;
+                    }
+                }
             }
         }
         return null;
+    }
+
+    _doorTileToSide(tile) {
+        switch (tile) {
+            case TILE.DOOR_RIGHT: return 'right';
+            case TILE.DOOR_LEFT: return 'left';
+            case TILE.DOOR_UP: return 'top';
+            case TILE.DOOR_DOWN: return 'bottom';
+            default: return null;
+        }
     }
 
     // Check if player is at a save bench

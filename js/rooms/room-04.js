@@ -19,8 +19,8 @@ export function createRoom() {
         width: 35,
         height: 25,
         tiles: [
-            [S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S],
-            [S,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,DU,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,S],
+            [S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,DU,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S],
+            [S,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,S],
             [S,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,S],
             [S,_,_,_,_,P,P,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,P,P,_,_,_,_,S],
             [S,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,S],
@@ -42,7 +42,7 @@ export function createRoom() {
             [S,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,S,S,_,DR,S],
             [S,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,S],
             [S,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,S],
-            [S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S],
+            [S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,DB,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S],
             [S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S],
         ],
         spawns: [
@@ -51,9 +51,9 @@ export function createRoom() {
             { type: 'shieldKnight', x: 16, y: 22 },
         ],
         doors: [
-            { side: 'bottom', x: 16, y: 24, target: 'room-03', spawnSide: 'top' },
+            { side: 'bottom', x: 16, y: 23, target: 'room-03', spawnSide: 'top' },
             { side: 'top', x: 16, y: 0, target: 'room-05', spawnSide: 'bottom' },
-            { side: 'right', x: 34, y: 20, target: 'room-10', spawnSide: 'left' },
+            { side: 'right', x: 33, y: 20, target: 'room-10', spawnSide: 'left' },
         ],
         playerStart: { x: 16 * 16, y: 22 * 16 },
         accent: '#ffffff',

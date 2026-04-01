@@ -6,6 +6,7 @@ const P = TILE.PLATFORM;
 const B = TILE.BREAKABLE;
 const K = TILE.SPIKE;
 const DB = TILE.DOOR_DOWN;
+const DU = TILE.DOOR_UP;
 
 // Vestibule of Echoes — 40×17
 // Tall entry hall with crumbled pillars. Vertical platforming. Gap requiring dash.
@@ -16,7 +17,7 @@ export function createRoom() {
         width: 40,
         height: 17,
         tiles: [
-            [S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S],
+            [S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,DU,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S],
             [S,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,S],
             [S,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,S],
             [S,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,S],
@@ -24,7 +25,7 @@ export function createRoom() {
             [S,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,S],
             [S,_,_,_,_,_,_,_,P,P,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,P,P,P,_,_,_,_,_,_,_,_,_,_,S],
             [S,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,S],
-            [S,DB,_,_,_,P,P,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,S],
+            [S,_,_,_,_,P,P,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,S],
             [S,_,_,_,_,_,_,_,_,_,_,_,_,_,S,S,_,_,_,_,_,_,_,_,S,S,_,_,_,_,_,_,_,_,_,_,_,_,_,S],
             [S,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,S],
             [S,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,K,K,K,K,K,K,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,S],
@@ -32,7 +33,7 @@ export function createRoom() {
             [S,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,S],
             [S,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,S],
             [S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S],
-            [S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S],
+            [S,DB,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S],
         ],
         spawns: [
             { type: 'crawler', x: 10, y: 14 },
@@ -40,7 +41,7 @@ export function createRoom() {
             { type: 'spitter', x: 35, y: 14 },
         ],
         doors: [
-            { side: 'bottom', x: 1, y: 15, target: 'room-01', spawnSide: 'top' },
+            { side: 'bottom', x: 1, y: 16, target: 'room-01', spawnSide: 'top' },
             { side: 'top', x: 20, y: 0, target: 'room-03', spawnSide: 'bottom' },
         ],
         playerStart: { x: 2 * 16, y: 14 * 16 },

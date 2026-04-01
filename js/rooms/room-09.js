@@ -6,7 +6,7 @@ const P = TILE.PLATFORM;
 const DR = TILE.DOOR_RIGHT;
 
 // Forgotten Alcove — 20×15
-// Small hidden room. Light puzzle (hit switches in order). Reward: Time Slow ability.
+// Small hidden room. Light puzzle. Reward: Time Slow ability.
 export function createRoom() {
     return {
         id: 'room-09',
@@ -32,7 +32,7 @@ export function createRoom() {
         ],
         spawns: [],
         doors: [
-            { side: 'right', x: 19, y: 9, target: 'room-05', spawnSide: 'left' },
+            { side: 'right', x: 18, y: 9, target: 'room-05', spawnSide: 'left' },
         ],
         playerStart: { x: 17 * 16, y: 12 * 16 },
         accent: '#ccaaff',

@@ -1,4 +1,4 @@
-import { GAME_WIDTH, GAME_HEIGHT, TILE_SIZE, FOCUS_DRAIN_RATE, FOCUS_MAX, COLORS, ROOM_COLORS } from './config.js';
+import { GAME_WIDTH, GAME_HEIGHT, TILE_SIZE, FOCUS_DRAIN_RATE, FOCUS_MAX, COLORS, ROOM_COLORS, HITSTOP_FRAMES } from './config.js';
 import { input } from './input.js';
 import { Camera } from './camera.js';
 import { Player } from './player.js';
@@ -102,6 +102,7 @@ function update() {
                 effects.showRoomName(roomManager.currentRoom?.name || '');
                 audio.init();
                 audio.resume();
+                audio.startMusic();
                 audio.startAmbient(roomManager.currentRoomId);
             }
             break;
@@ -158,6 +159,10 @@ function updatePlaying() {
         effects.timeSlowActive = false;
     }
 
+    // Track state for audio triggers
+    const prevPlayerState = player.currentState;
+    const prevEnemyAlive = roomManager.enemies.map(e => !e.dead);
+
     // Combat system
     combat.update();
 
@@ -166,11 +171,39 @@ function updatePlaying() {
         player.update(roomManager.tilemap, particles, effects, combat, roomManager.enemies);
     }
 
+    // Audio for player state changes
+    if (player.currentState !== prevPlayerState) {
+        switch (player.currentState) {
+            case 'jump': case 'wallJump': audio.jump(); break;
+            case 'dash': audio.dash(); break;
+            case 'attack': audio.slash(); break;
+            case 'hurt': audio.playerHurt(); break;
+            case 'death': audio.playerDeath(); break;
+        }
+        if (prevPlayerState === 'fall' || prevPlayerState === 'jump') {
+            if (player.currentState === 'idle' || player.currentState === 'run') {
+                audio.land();
+            }
+        }
+    }
+
     // Enemies
     for (const enemy of roomManager.enemies) {
         if (!combat.isEntityFrozen(enemy) && !enemy.dead) {
             enemy.update(roomManager.tilemap, player, roomManager.projectiles, particles);
         }
+    }
+
+    // Audio for enemy deaths
+    for (let i = 0; i < roomManager.enemies.length; i++) {
+        if (prevEnemyAlive[i] && roomManager.enemies[i].dead) {
+            audio.enemyDeath();
+        }
+    }
+
+    // Audio for hits (check hitstop just triggered)
+    if (combat.hitstopTimer === HITSTOP_FRAMES) {
+        audio.hit();
     }
 
     // Projectiles
@@ -279,6 +312,7 @@ function updatePlaying() {
         currentSpawn = { x: player.x, y: player.y };
         player.hp = player.maxHp;
         effects.flash('#00fff5', 8);
+        audio.save();
     }
 
     // Upgrade pickup check
